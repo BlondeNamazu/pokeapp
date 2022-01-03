@@ -13,7 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.pokeapp.ui.theme.PokeAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchActivity : ComponentActivity() {
     companion object {
         fun createIntent(context: Context): Intent {
@@ -28,10 +30,11 @@ class SearchActivity : ComponentActivity() {
             PokeAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    Greeting(viewModel.state.observeAsState().value?.greeting ?: "Not Found")
+                    Greeting(viewModel.state.observeAsState().value?.name ?: "Not Found")
                 }
             }
         }
+        viewModel.initialize()
     }
 }
 
