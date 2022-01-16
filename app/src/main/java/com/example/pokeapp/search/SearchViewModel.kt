@@ -29,4 +29,13 @@ class SearchViewModel @Inject constructor(
             state.postValue(State.Initialized(info))
         }
     }
+
+    fun refresh(offset: Int) {
+        val currentState = state.value as? State.Initialized ?: return
+        viewModelScope.launch {
+            val info = repository.getPokemonList(20, offset.toLong())
+            val updatedInfo = currentState.pokemonList.plus(info)
+            state.postValue(State.Initialized(updatedInfo))
+        }
+    }
 }

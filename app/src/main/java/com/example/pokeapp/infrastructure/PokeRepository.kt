@@ -7,8 +7,8 @@ class PokeRepository @Inject constructor(
     private val pokeApi: PokeApi
 ) {
     suspend fun getPokemonList(limit: Long, offset: Long): List<PokemonInfo> {
-        return ((offset + 1)..limit).map {
-            val response = pokeApi.getPokemonInfo(it)
+        return (1..limit).map {
+            val response = pokeApi.getPokemonInfo(offset + it)
             if (!response.isSuccessful) throw Exception()
             response.body()!!.toPokemonInfo()
         }

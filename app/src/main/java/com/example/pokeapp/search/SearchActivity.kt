@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.pokeapp.entity.PokemonInfo
 import com.example.pokeapp.ui.theme.PokeAppTheme
+import com.example.pokeapp.util.OnAppearLastItem
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,8 +44,7 @@ class SearchActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     PokemonList(
-                        state = viewModel.state.observeAsState().value
-                            ?: SearchViewModel.State.Initial
+                        viewModel
                     )
                 }
             }
@@ -53,11 +54,15 @@ class SearchActivity : ComponentActivity() {
 }
 
 @Composable
-fun PokemonList(state: SearchViewModel.State) {
-    when (state) {
+fun PokemonList(viewModel: SearchViewModel) {
+    when (val state = viewModel.state.observeAsState().value) {
         is SearchViewModel.State.Initial -> Text("Loading Pokemon Info...")
         is SearchViewModel.State.Initialized -> {
-            LazyColumn {
+            LazyColumn(
+                state = rememberLazyListState().apply {
+                    OnAppearLastItem(onAppearLastItem = { offset -> viewModel.refresh(offset) })
+                }
+            ) {
                 items(state.pokemonList) { pokemonInfo ->
                     PokemonListItem(pokemonInfo = pokemonInfo)
                 }
