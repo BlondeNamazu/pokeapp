@@ -13,4 +13,10 @@ class PokeRepository @Inject constructor(
             response.body()!!.toPokemonInfo()
         }
     }
+
+    suspend fun getPokemonInfo(id: Long): PokemonInfo {
+        val response = pokeApi.getPokemonInfo(id)
+        if (!response.isSuccessful) throw Exception()
+        return response.body()!!.toPokemonInfo()
+    }
 }

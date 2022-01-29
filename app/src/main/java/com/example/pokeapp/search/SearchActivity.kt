@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,6 +24,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
+import com.example.pokeapp.detail.DetailActivity
 import com.example.pokeapp.entity.PokemonInfo
 import com.example.pokeapp.ui.theme.PokeAppTheme
 import com.example.pokeapp.util.OnAppearLastItem
@@ -44,6 +46,9 @@ class SearchActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     PokemonList(
+                        onClickListener = { id: Long ->
+                            startActivity(DetailActivity.createIntent(this, id))
+                        },
                         viewModel
                     )
                 }
@@ -54,7 +59,7 @@ class SearchActivity : ComponentActivity() {
 }
 
 @Composable
-fun PokemonList(viewModel: SearchViewModel) {
+fun PokemonList(onClickListener: (id: Long) -> Unit, viewModel: SearchViewModel) {
     when (val state = viewModel.state.observeAsState().value) {
         is SearchViewModel.State.Initial -> Text("Loading Pokemon Info...")
         is SearchViewModel.State.Initialized -> {
@@ -64,14 +69,14 @@ fun PokemonList(viewModel: SearchViewModel) {
                 }
             ) {
                 items(state.pokemonList) { pokemonInfo ->
-                    PokemonListItem(pokemonInfo = pokemonInfo)
+                    PokemonListItem(onClickListener = onClickListener, pokemonInfo = pokemonInfo)
                 }
             }
             if (state is SearchViewModel.State.Initialized.Loading) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
-                ){
+                ) {
                     CircularProgressIndicator()
                 }
             }
@@ -80,8 +85,12 @@ fun PokemonList(viewModel: SearchViewModel) {
 }
 
 @Composable
-fun PokemonListItem(pokemonInfo: PokemonInfo) {
-    Row {
+fun PokemonListItem(onClickListener: (id: Long) -> Unit, pokemonInfo: PokemonInfo) {
+    Row(
+        modifier = Modifier.clickable {
+            onClickListener(pokemonInfo.id)
+        }
+    ) {
         Image(
             painter = rememberImagePainter(pokemonInfo.imageUrl),
             contentScale = ContentScale.Crop,
@@ -100,6 +109,7 @@ fun PokemonListItem(pokemonInfo: PokemonInfo) {
 fun PokemonListItemPreview() {
     PokeAppTheme {
         PokemonListItem(
+            onClickListener = {},
             pokemonInfo = PokemonInfo.dummy()
         )
     }
