@@ -1,15 +1,19 @@
 package com.example.pokeapp.entity
 
 import android.net.Uri
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity
 data class PokemonInfo(
-    val id: Long,
+    @PrimaryKey val id: Long,
     val name: String,
     val imageUrl: Uri,
     val types: List<String>,
     val height: String,
     val weight: String,
-    val statInfo: PokemonStatInfo,
+    @Embedded(prefix = "stat") val statInfo: PokemonStatInfo,
 ) {
     companion object {
         fun dummy() = PokemonInfo(

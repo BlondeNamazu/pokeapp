@@ -1,9 +1,13 @@
 package com.example.pokeapp.infrastructure
 
+import android.content.Context
+import androidx.room.Room
+import com.example.pokeapp.infrastructure.db.AppDatabase
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -34,5 +38,17 @@ object PokeModule {
         retrofit: Retrofit
     ): PokeApi {
         return retrofit.create(PokeApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAppDatabase(
+        @ApplicationContext context: Context
+    ): AppDatabase {
+        return Room.databaseBuilder(
+            context,
+            AppDatabase::class.java,
+            "PokeAppDatabase"
+        ).build()
     }
 }
