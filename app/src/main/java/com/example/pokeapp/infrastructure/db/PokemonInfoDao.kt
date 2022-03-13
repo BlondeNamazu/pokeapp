@@ -10,8 +10,11 @@ interface PokemonInfoDao {
     @Query("SELECT * FROM pokemoninfo")
     suspend fun getAll(): List<PokemonInfo>
 
+    @Query("SELECT * FROM pokemoninfo WHERE id BETWEEN :min AND :max")
+    suspend fun getInRange(min: Long, max: Long): List<PokemonInfo>
+
     @Query("SELECT * FROM pokemoninfo WHERE id = :id")
-    suspend fun get(id: Long): PokemonInfo
+    suspend fun get(id: Long): List<PokemonInfo>
 
     @Insert
     suspend fun insert(pokemonInfoList: List<PokemonInfo>)
