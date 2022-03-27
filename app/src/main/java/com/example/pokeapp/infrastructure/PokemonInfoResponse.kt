@@ -20,7 +20,7 @@ data class PokemonInfoResponse(
         return PokemonInfo(
             id = id,
             name = name,
-            imageUrl = Uri.parse(sprites.other.officialArtwork.imageUrl),
+            imageUrl = Uri.parse(sprites.other.officialArtwork.imageUrl?: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"),
             types = types.map { it.type.name },
             height = "${height / 10}.${height % 10}",
             weight = "${weight / 10}.${weight % 10}",

@@ -1,6 +1,8 @@
 package com.example.pokeapp.infrastructure
 
+import com.example.pokeapp.entity.PagingInfo
 import com.example.pokeapp.entity.PokemonInfo
+import com.example.pokeapp.entity.PokemonInfoListAndPagingInfo
 import com.example.pokeapp.infrastructure.db.AppDatabase
 import javax.inject.Inject
 
@@ -8,16 +10,28 @@ class PokeRepository @Inject constructor(
     private val pokeApi: PokeApi,
     private val appDatabase: AppDatabase
 ) {
-    suspend fun getPokemonList(limit: Long, offset: Long): List<PokemonInfo> {
-        val dataInDb = appDatabase.pokemonInfoDao().getInRange(offset + 1, offset + limit)
-        if (dataInDb.size.toLong() == limit) return dataInDb
-        val dataFromApi = (dataInDb.size + 1..limit).map {
-            val response = pokeApi.getPokemonInfo(offset + it)
-            if (!response.isSuccessful) throw Exception()
-            response.body()!!.toPokemonInfo()
+    suspend fun getPokemonList(pagingInfo: PagingInfo): PokemonInfoListAndPagingInfo {
+        val listResponse = pokeApi.getPokemonList(
+            offset = pagingInfo.offset,
+            limit = pagingInfo.limit
+        )
+        if (!listResponse.isSuccessful) throw Exception()
+        val newPagingInfo = listResponse.body()!!.pagingInfo
+        val ids = listResponse.body()!!.summaryInfoList.map { it.id }
+
+        val dataInDb = appDatabase.pokemonInfoDao().get(ids)
+        if (dataInDb.size == ids.size) return PokemonInfoListAndPagingInfo(
+            pokemonInfoList = dataInDb,
+            pagingInfo = newPagingInfo
+        )
+        val dataFromApi = ids.minus(dataInDb.map { it.id }).map { id ->
+            getPokemonInfo(id)
         }
         appDatabase.pokemonInfoDao().insert(dataFromApi)
-        return dataInDb.plus(dataFromApi)
+        return PokemonInfoListAndPagingInfo(
+            pokemonInfoList = dataInDb.plus(dataFromApi),
+            pagingInfo = newPagingInfo
+        )
     }
 
     suspend fun getPokemonInfo(id: Long): PokemonInfo {

@@ -68,7 +68,7 @@ fun PokemonList(onClickListener: (id: Long) -> Unit, viewModel: SearchViewModel)
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
                 state = rememberLazyListState().apply {
-                    OnAppearLastItem(onAppearLastItem = { offset -> viewModel.refresh(offset) })
+                    OnAppearLastItem(onAppearLastItem = { viewModel.refresh() })
                 }
             ) {
                 items(state.pokemonList) { pokemonInfo ->

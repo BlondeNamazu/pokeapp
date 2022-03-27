@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.collect
  * @param onAppearLastItem リストの一番最後に到達した際に呼ばれる関数
  */
 @Composable
-fun LazyListState.OnAppearLastItem(onAppearLastItem: (Int) -> Unit) {
+fun LazyListState.OnAppearLastItem(onAppearLastItem: () -> Unit) {
     val isReachedToListEnd by remember {
         derivedStateOf {
             // 追加読み込みを行う条件
@@ -26,7 +26,7 @@ fun LazyListState.OnAppearLastItem(onAppearLastItem: (Int) -> Unit) {
         snapshotFlow { isReachedToListEnd }
             .filter { it }
             .collect {
-                onAppearLastItem(layoutInfo.totalItemsCount)
+                onAppearLastItem()
             }
     }
 }

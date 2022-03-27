@@ -3,6 +3,7 @@ package com.example.pokeapp.search
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pokeapp.entity.PagingInfo
 import com.example.pokeapp.entity.PokemonInfo
 import com.example.pokeapp.infrastructure.PokeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,17 +15,23 @@ class SearchViewModel @Inject constructor(
     private val repository: PokeRepository
 ) : ViewModel() {
     sealed class State {
-        object Initial : State()
+        abstract val pagingInfo: PagingInfo?
 
-        sealed class Initialized: State() {
+        object Initial : State() {
+            override val pagingInfo: PagingInfo? get() = null
+        }
+
+        sealed class Initialized : State() {
             abstract val pokemonList: List<PokemonInfo>
 
             data class Ideal(
-                override val pokemonList: List<PokemonInfo>
+                override val pokemonList: List<PokemonInfo>,
+                override val pagingInfo: PagingInfo?
             ) : Initialized()
 
             data class Loading(
-                override val pokemonList: List<PokemonInfo>
+                override val pokemonList: List<PokemonInfo>,
+                override val pagingInfo: PagingInfo?
             ) : Initialized()
         }
     }
@@ -33,19 +40,33 @@ class SearchViewModel @Inject constructor(
 
     fun initialize() {
         viewModelScope.launch {
-            state.postValue(State.Initialized.Loading(emptyList()))
-            val info = repository.getPokemonList(20, 0)
-            state.postValue(State.Initialized.Ideal(info))
+            val initialPagingInfo = PagingInfo(offset = 0, limit = 100)
+            state.postValue(State.Initialized.Loading(emptyList(), initialPagingInfo))
+            val result = repository.getPokemonList(initialPagingInfo)
+            state.postValue(
+                State.Initialized.Ideal(
+                    pokemonList = result.pokemonInfoList,
+                    pagingInfo = result.pagingInfo
+                )
+            )
         }
     }
 
-    fun refresh(offset: Int) {
+    fun refresh() {
         val currentState = state.value as? State.Initialized ?: return
         viewModelScope.launch {
-            state.postValue(State.Initialized.Loading(currentState.pokemonList))
-            val info = repository.getPokemonList(20, offset.toLong())
-            val updatedInfo = currentState.pokemonList.plus(info)
-            state.postValue(State.Initialized.Ideal(updatedInfo))
+            val pagingInfo = currentState.pagingInfo
+            if (pagingInfo != null) {
+                state.postValue(
+                    State.Initialized.Loading(
+                        pokemonList = currentState.pokemonList,
+                        pagingInfo = currentState.pagingInfo
+                    )
+                )
+                val result = repository.getPokemonList(pagingInfo)
+                val updatedInfoList = currentState.pokemonList.plus(result.pokemonInfoList)
+                state.postValue(State.Initialized.Ideal(updatedInfoList, result.pagingInfo))
+            }
         }
     }
 }
