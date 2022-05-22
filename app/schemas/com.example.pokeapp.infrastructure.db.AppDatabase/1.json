@@ -2,10 +2,10 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0cec03b3a8c445f926a9e21577eb8923",
+    "identityHash": "0be7caf6dc226f6d250c42acd6e469de",
     "entities": [
       {
-        "tableName": "PokemonInfo",
+        "tableName": "PokemonInfoDetail",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, `imageUrl` TEXT NOT NULL, `types` TEXT NOT NULL, `height` TEXT NOT NULL, `weight` TEXT NOT NULL, `stathp` INTEGER NOT NULL, `statattack` INTEGER NOT NULL, `statdefense` INTEGER NOT NULL, `statspecialAttack` INTEGER NOT NULL, `statspecialDefense` INTEGER NOT NULL, `statspeed` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
@@ -94,7 +94,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0cec03b3a8c445f926a9e21577eb8923')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0be7caf6dc226f6d250c42acd6e469de')"
     ]
   }
 }

@@ -3,10 +3,10 @@ package com.example.pokeapp.infrastructure.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.pokeapp.entity.PokemonInfo
+import com.example.pokeapp.entity.PokemonDetailInfo
 
 @Database(
-    entities = [PokemonInfo::class],
+    entities = [PokemonDetailInfo::class],
     version = 1
 )
 @TypeConverters(Converters::class)

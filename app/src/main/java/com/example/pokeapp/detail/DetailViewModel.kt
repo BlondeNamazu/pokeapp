@@ -3,9 +3,8 @@ package com.example.pokeapp.detail
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pokeapp.entity.PokemonInfo
-import com.example.pokeapp.infrastructure.PokeRepository
-import com.example.pokeapp.search.SearchViewModel
+import com.example.pokeapp.entity.PokemonDetailInfo
+import com.example.pokeapp.infrastructure.repository.PokeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,14 +17,14 @@ class DetailViewModel @Inject constructor(
         object Initial : State()
 
         sealed class Initialized : State() {
-            abstract val pokemonInfo: PokemonInfo
+            abstract val pokemonInfo: PokemonDetailInfo
 
             data class Ideal(
-                override val pokemonInfo: PokemonInfo
+                override val pokemonInfo: PokemonDetailInfo
             ) : Initialized()
 
             data class Loading(
-                override val pokemonInfo: PokemonInfo
+                override val pokemonInfo: PokemonDetailInfo
             ) : Initialized()
         }
     }

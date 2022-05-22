@@ -1,5 +1,6 @@
 package com.example.pokeapp.infrastructure
 
+import com.example.pokeapp.entity.PokemonSummaryInfo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -14,4 +15,9 @@ data class PokemonSummaryInfoResponse(
             .find(url)!!
             .groupValues[1]
             .toLong()
+
+    fun toPokemonInfoSummary(): PokemonSummaryInfo = PokemonSummaryInfo(
+        id = id,
+        name = name
+    )
 }

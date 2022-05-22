@@ -4,19 +4,19 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.pokeapp.entity.PokemonInfo
+import com.example.pokeapp.entity.PokemonDetailInfo
 
 @Dao
 interface PokemonInfoDao {
-    @Query("SELECT * FROM pokemoninfo")
-    suspend fun getAll(): List<PokemonInfo>
+    @Query("SELECT * FROM PokemonInfoDetail")
+    suspend fun getAll(): List<PokemonDetailInfo>
 
-    @Query("SELECT * FROM pokemoninfo WHERE id IN (:ids)")
-    suspend fun get(ids: List<Long>): List<PokemonInfo>
+    @Query("SELECT * FROM PokemonInfoDetail WHERE id IN (:ids)")
+    suspend fun get(ids: List<Long>): List<PokemonDetailInfo>
 
-    @Query("SELECT * FROM pokemoninfo WHERE id = :id")
-    suspend fun get(id: Long): List<PokemonInfo>
+    @Query("SELECT * FROM PokemonInfoDetail WHERE id = :id")
+    suspend fun get(id: Long): List<PokemonDetailInfo>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(pokemonInfoList: List<PokemonInfo>)
+    suspend fun insert(pokemonInfoList: List<PokemonDetailInfo>)
 }

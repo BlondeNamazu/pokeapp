@@ -1,7 +1,7 @@
 package com.example.pokeapp.infrastructure
 
 import android.net.Uri
-import com.example.pokeapp.entity.PokemonInfo
+import com.example.pokeapp.entity.PokemonDetailInfo
 import com.example.pokeapp.entity.PokemonStatInfo
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -16,8 +16,8 @@ data class PokemonInfoResponse(
     @SerialName("weight") val weight: Long,
     @SerialName("stats") val stats: List<PokemonStatResponse>
 ) {
-    fun toPokemonInfo(): PokemonInfo {
-        return PokemonInfo(
+    fun toPokemonInfoDetail(): PokemonDetailInfo {
+        return PokemonDetailInfo(
             id = id,
             name = name,
             imageUrl = Uri.parse(sprites.other.officialArtwork.imageUrl?: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"),
