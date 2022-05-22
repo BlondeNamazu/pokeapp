@@ -70,8 +70,11 @@ fun PokemonList(
             .background(
                 color = Color.DarkGray,
             )
-            .padding(4.dp)
-
+            .padding(
+                horizontal =  12.dp,
+                vertical = 12.dp
+            ),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(pagingItems) {
             PokemonListItem(
@@ -94,10 +97,6 @@ fun PokemonListItem(
                     onClickListener(pokemonInfo.id)
                 }
                 .fillMaxWidth()
-                .padding(
-                    horizontal = 8.dp,
-                    vertical = 6.dp
-                )
                 .background(
                     color = Color.White,
                     shape = RoundedCornerShape(16.dp)
@@ -128,7 +127,7 @@ fun PokemonListItem(
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFCCCCCC)
+@Preview(showBackground = true, backgroundColor = 0xFF444444)
 @Composable
 fun PreviewPokemonListItem() {
     PokeAppTheme {
