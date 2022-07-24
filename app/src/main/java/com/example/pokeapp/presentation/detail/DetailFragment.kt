@@ -1,4 +1,4 @@
-package com.example.pokeapp.detail
+package com.example.pokeapp.presentation.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater

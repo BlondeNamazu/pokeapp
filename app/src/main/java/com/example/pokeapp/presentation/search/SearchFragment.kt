@@ -1,4 +1,4 @@
-package com.example.pokeapp.search
+package com.example.pokeapp.presentation.search
 
 import android.os.Bundle
 import android.view.LayoutInflater

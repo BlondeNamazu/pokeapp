@@ -7,14 +7,14 @@
         android:name="com.example.pokeapp.MainActivity" />
     <fragment
         android:id="@+id/detail_fragment"
-        android:name="com.example.pokeapp.detail.DetailFragment">
+        android:name="com.example.pokeapp.presentation.detail.DetailFragment">
         <argument
             android:name="id"
             app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/search_fragment"
-        android:name="com.example.pokeapp.search.SearchFragment">
+        android:name="com.example.pokeapp.presentation.search.SearchFragment">
         <action
             android:id="@+id/action_search_to_detail"
             app:destination="@id/detail_fragment"
