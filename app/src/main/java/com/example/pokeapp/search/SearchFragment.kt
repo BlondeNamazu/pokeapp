@@ -27,10 +27,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.example.pokeapp.detail.DetailActivity
 import com.example.pokeapp.entity.PokemonSummaryInfo
 import com.example.pokeapp.ui.theme.PokeAppTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,8 +51,8 @@ class SearchFragment : Fragment() {
                         PokemonList(
                             pagingItems = viewModel.pagingDataFlow.collectAsLazyPagingItems(),
                             onClickListener = { id ->
-                                startActivity(
-                                    DetailActivity.createIntent(requireContext(), id)
+                                findNavController().navigate(
+                                    SearchFragmentDirections.actionSearchToDetail(id)
                                 )
                             }
                         )

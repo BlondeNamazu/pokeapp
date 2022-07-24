@@ -3,16 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/poke_app">
     <activity
-        android:id="@+id/detail_activity"
-        android:name="com.example.pokeapp.detail.DetailActivity">
-        <argument
-            android:name="id"
-            app:argType="long" />
-    </activity>
-    <activity
         android:id="@+id/main_activity"
         android:name="com.example.pokeapp.MainActivity" />
     <fragment
+        android:id="@+id/detail_fragment"
+        android:name="com.example.pokeapp.detail.DetailFragment">
+        <argument
+            android:name="id"
+            app:argType="long" />
+    </fragment>
+    <fragment
         android:id="@+id/search_fragment"
-        android:name="com.example.pokeapp.search.SearchFragment" />
+        android:name="com.example.pokeapp.search.SearchFragment">
+        <action
+            android:id="@+id/action_search_to_detail"
+            app:destination="@id/detail_fragment" />
+    </fragment>
 </navigation>
