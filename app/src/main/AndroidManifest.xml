@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".search.SearchActivity"
+            android:name=".search.SearchFragment"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.PokeApp.NoActionBar">

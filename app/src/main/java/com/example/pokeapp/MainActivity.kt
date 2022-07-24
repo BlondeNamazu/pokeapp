@@ -1,19 +1,26 @@
 package com.example.pokeapp
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.pokeapp.search.SearchActivity
-import com.example.pokeapp.ui.theme.PokeAppTheme
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : ComponentActivity() {
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        startActivity(SearchActivity.createIntent(this))
+        setContentView(R.layout.activity_main)
+        setupNavigation()
+    }
+
+    private fun setupNavigation() {
+        val navController = requireNotNull(
+            supportFragmentManager.findFragmentById(R.id.main_fragment_container)
+                ?.findNavController()
+        )
+        val navGraph = navController.navInflater.inflate(R.navigation.poke_app)
+        navController.graph = navGraph.apply {
+            setStartDestination(R.id.search_fragment)
+        }
     }
 }
