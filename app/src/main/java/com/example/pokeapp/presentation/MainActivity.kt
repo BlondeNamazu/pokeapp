@@ -1,8 +1,9 @@
-package com.example.pokeapp
+package com.example.pokeapp.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
+import com.example.pokeapp.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

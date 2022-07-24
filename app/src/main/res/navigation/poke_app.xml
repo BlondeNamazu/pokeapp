@@ -4,7 +4,7 @@
     android:id="@+id/poke_app">
     <activity
         android:id="@+id/main_activity"
-        android:name="com.example.pokeapp.MainActivity" />
+        android:name="com.example.pokeapp.presentation.MainActivity" />
     <fragment
         android:id="@+id/detail_fragment"
         android:name="com.example.pokeapp.presentation.detail.DetailFragment">
