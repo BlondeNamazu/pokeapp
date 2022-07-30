@@ -27,15 +27,6 @@ class PokeRepository @Inject constructor(
         return appDatabase.pokemonInfoDao().getFlow(id)
     }
 
-    suspend fun getPokemonInfo(id: Long): PokemonDetailInfo {
-        val dataInDb = appDatabase.pokemonInfoDao().get(id)
-        if (dataInDb.isNotEmpty()) return dataInDb.first()
-        val response = pokeApi.getPokemonInfo(id)
-        if (!response.isSuccessful) throw Exception()
-        appDatabase.pokemonInfoDao().insert(listOf(response.body()!!.toPokemonInfoDetail()))
-        return response.body()!!.toPokemonInfoDetail()
-    }
-
     fun getPokemonListFlow(): Flow<PagingData<PokemonSummaryInfo>> {
         return Pager(
             config = PagingConfig(
