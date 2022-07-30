@@ -18,12 +18,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import coil.compose.rememberImagePainter
+import com.example.pokeapp.entity.PokemonDetailInfo
+import com.example.pokeapp.entity.PokemonStatInfo
 import com.example.pokeapp.ui.theme.PokeAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -64,46 +67,14 @@ fun PokemonDetailItem(viewModel: DetailViewModel) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text(
-                    text = "Pokedex Number: ${pokemonInfo.id}",
-                    fontSize = 16.sp
-                )
-                Image(
-                    painter = rememberImagePainter(pokemonInfo.imageUrl),
-                    contentScale = ContentScale.Crop,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(24.dp)
-                )
-                Text(
-                    text = pokemonInfo.name,
-                    fontSize = 64.sp
-                )
+                PokemonBaseProfile(pokemonInfo = pokemonInfo)
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceAround,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        items(pokemonInfo.types) { type ->
-                            Text(text = type)
-                        }
-                    }
-                    Column(
-                        verticalArrangement = Arrangement.SpaceAround,
-                        horizontalAlignment = Alignment.Start
-                    ) {
-                        Text("HP: ${pokemonInfo.statInfo.hp}")
-                        Text("Attack: ${pokemonInfo.statInfo.attack}")
-                        Text("Defense: ${pokemonInfo.statInfo.defense}")
-                        Text("SpecialAttack: ${pokemonInfo.statInfo.specialAttack}")
-                        Text("SpecialDefense: ${pokemonInfo.statInfo.specialDefense}")
-                        Text("Speed: ${pokemonInfo.statInfo.speed}")
-                    }
+                    PokemonTypeList(types = pokemonInfo.types)
+                    PokemonStatInfoList(statInfo = pokemonInfo.statInfo)
                 }
             }
         }
@@ -115,5 +86,92 @@ fun PokemonDetailItem(viewModel: DetailViewModel) {
                 CircularProgressIndicator()
             }
         }
+    }
+}
+
+@Composable
+fun PokemonBaseProfile(
+    pokemonInfo: PokemonDetailInfo,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Text(
+            text = "Pokedex Number: ${pokemonInfo.id}",
+            fontSize = 16.sp
+        )
+        Image(
+            painter = rememberImagePainter(pokemonInfo.imageUrl),
+            contentScale = ContentScale.Crop,
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp)
+        )
+        Text(
+            text = pokemonInfo.name,
+            fontSize = 64.sp
+        )
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Composable
+fun PreviewPokemonBaseProfile() {
+    MaterialTheme {
+        PokemonBaseProfile(pokemonInfo = PokemonDetailInfo.dummy())
+    }
+}
+
+@Composable
+fun PokemonTypeList(
+    types: List<String>,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        items(types) { type ->
+            Text(text = type)
+        }
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Composable
+fun PreviewPokemonTypeList() {
+    MaterialTheme {
+        PokemonTypeList(types = PokemonDetailInfo.dummy().types)
+    }
+}
+
+@Composable
+fun PokemonStatInfoList(
+    statInfo: PokemonStatInfo,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.SpaceAround,
+        horizontalAlignment = Alignment.Start
+    ) {
+        Text("HP: ${statInfo.hp}")
+        Text("Attack: ${statInfo.attack}")
+        Text("Defense: ${statInfo.defense}")
+        Text("SpecialAttack: ${statInfo.specialAttack}")
+        Text("SpecialDefense: ${statInfo.specialDefense}")
+        Text("Speed: ${statInfo.speed}")
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Composable
+fun PreviewPokemonStatInfoList() {
+    MaterialTheme {
+        PokemonStatInfoList(statInfo = PokemonDetailInfo.dummy().statInfo)
     }
 }
