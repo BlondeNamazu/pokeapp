@@ -33,8 +33,10 @@ class DetailViewModel @Inject constructor(
 
     fun initialize(id: Long) {
         viewModelScope.launch {
-            val info = repository.getPokemonInfo(id)
-            state.postValue(State.Initialized.Ideal(info))
+            repository.fetchPokemonInfo(id)
+            repository.getPokemonDetailFlow(id).collect { info ->
+                state.postValue(State.Initialized.Ideal(info))
+            }
         }
     }
 

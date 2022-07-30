@@ -49,6 +49,8 @@ object PokeModule {
             context,
             AppDatabase::class.java,
             "PokeAppDatabase"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 }

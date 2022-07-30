@@ -14,6 +14,19 @@ class PokeRepository @Inject constructor(
     private val pokeApi: PokeApi,
     private val appDatabase: AppDatabase
 ) {
+    suspend fun fetchPokemonInfo(id: Long) {
+        val dataInDb = appDatabase.pokemonInfoDao().get(id)
+        if (dataInDb.isEmpty()) {
+            val response = pokeApi.getPokemonInfo(id)
+            if (!response.isSuccessful) throw Exception()
+            appDatabase.pokemonInfoDao().insert(listOf(response.body()!!.toPokemonInfoDetail()))
+        }
+    }
+
+    fun getPokemonDetailFlow(id: Long): Flow<PokemonDetailInfo> {
+        return appDatabase.pokemonInfoDao().getFlow(id)
+    }
+
     suspend fun getPokemonInfo(id: Long): PokemonDetailInfo {
         val dataInDb = appDatabase.pokemonInfoDao().get(id)
         if (dataInDb.isNotEmpty()) return dataInDb.first()

@@ -20,6 +20,6 @@ class Converters {
 
     @TypeConverter
     fun fromStringToStringList(string: String): List<String> {
-        return string.split(',')
+        return string.split(", ")
     }
 }

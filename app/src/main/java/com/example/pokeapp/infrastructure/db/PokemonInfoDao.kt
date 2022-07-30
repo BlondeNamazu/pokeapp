@@ -5,11 +5,12 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.pokeapp.entity.PokemonDetailInfo
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PokemonInfoDao {
-    @Query("SELECT * FROM PokemonInfoDetail")
-    suspend fun getAll(): List<PokemonDetailInfo>
+    @Query("SELECT * FROM PokemonInfoDetail WHERE id = :id")
+    fun getFlow(id: Long): Flow<PokemonDetailInfo>
 
     @Query("SELECT * FROM PokemonInfoDetail WHERE id IN (:ids)")
     suspend fun get(ids: List<Long>): List<PokemonDetailInfo>
