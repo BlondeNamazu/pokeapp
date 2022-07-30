@@ -8,14 +8,15 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
@@ -67,7 +68,12 @@ fun PokemonDetailItem(viewModel: DetailViewModel) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                PokemonBaseProfile(pokemonInfo = pokemonInfo)
+                PokemonBaseProfile(
+                    pokemonInfo = pokemonInfo,
+                    onFavoriteButtonClicked = { id, isFavorite ->
+                        viewModel.setFavoriteState(id, isFavorite)
+                    }
+                )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceAround,
@@ -92,6 +98,7 @@ fun PokemonDetailItem(viewModel: DetailViewModel) {
 @Composable
 fun PokemonBaseProfile(
     pokemonInfo: PokemonDetailInfo,
+    onFavoriteButtonClicked: (id: Long, isFavorite: Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -110,10 +117,58 @@ fun PokemonBaseProfile(
                 .fillMaxWidth()
                 .padding(24.dp)
         )
+        PokemonNameWithFavoriteButton(
+            modifier = Modifier.padding(horizontal = 8.dp),
+            pokemonInfo = pokemonInfo,
+            onFavoriteButtonClicked = onFavoriteButtonClicked
+        )
+    }
+}
+
+@Composable
+fun PokemonNameWithFavoriteButton(
+    pokemonInfo: PokemonDetailInfo,
+    onFavoriteButtonClicked: (id: Long, isFavorite: Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Text(
             text = pokemonInfo.name,
             fontSize = 64.sp
         )
+        IconToggleButton(
+            checked = pokemonInfo.isFavorite,
+            onCheckedChange = { isFavorite ->
+                onFavoriteButtonClicked(pokemonInfo.id, isFavorite)
+            }
+        ) {
+            Icon(
+                imageVector = if (pokemonInfo.isFavorite) Icons.Filled.Favorite else Icons.Outlined.Favorite,
+                contentDescription = "Favorite button",
+                tint = if (pokemonInfo.isFavorite) Color.Magenta else Color.Gray
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Composable
+fun PreviewPokemonNameWithFavoriteButton() {
+    MaterialTheme {
+        Column {
+            PokemonNameWithFavoriteButton(
+                pokemonInfo = PokemonDetailInfo.dummy().copy(isFavorite = true),
+                onFavoriteButtonClicked = { _, _ -> }
+            )
+            PokemonNameWithFavoriteButton(
+                pokemonInfo = PokemonDetailInfo.dummy().copy(isFavorite = false),
+                onFavoriteButtonClicked = { _, _ -> }
+            )
+        }
     }
 }
 
@@ -121,7 +176,10 @@ fun PokemonBaseProfile(
 @Composable
 fun PreviewPokemonBaseProfile() {
     MaterialTheme {
-        PokemonBaseProfile(pokemonInfo = PokemonDetailInfo.dummy())
+        PokemonBaseProfile(
+            pokemonInfo = PokemonDetailInfo.dummy(),
+            onFavoriteButtonClicked = { _, _ -> }
+        )
     }
 }
 

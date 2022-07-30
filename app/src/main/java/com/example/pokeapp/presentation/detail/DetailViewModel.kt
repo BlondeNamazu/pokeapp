@@ -37,4 +37,10 @@ class DetailViewModel @Inject constructor(
             state.postValue(State.Initialized.Ideal(info))
         }
     }
+
+    fun setFavoriteState(id: Long, isFavorite: Boolean) {
+        viewModelScope.launch {
+            repository.updateFavoriteState(id, isFavorite)
+        }
+    }
 }

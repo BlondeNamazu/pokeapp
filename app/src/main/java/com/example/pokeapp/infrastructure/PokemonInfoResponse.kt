@@ -31,7 +31,8 @@ data class PokemonInfoResponse(
                 specialAttack = stats.first { it.stat.name == "special-attack" }.baseStat,
                 specialDefense = stats.first { it.stat.name == "special-defense" }.baseStat,
                 speed = stats.first { it.stat.name == "speed" }.baseStat
-            )
+            ),
+            isFavorite = false
         )
     }
 }

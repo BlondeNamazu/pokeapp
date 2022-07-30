@@ -32,4 +32,16 @@ class PokeRepository @Inject constructor(
             pagingSourceFactory = { PokePagingSource(pokeApi) }
         ).flow
     }
+
+    suspend fun updateFavoriteState(
+        id: Long,
+        isFavorite: Boolean
+    ) {
+        val currentInfo = appDatabase.pokemonInfoDao().get(id).firstOrNull() ?: return
+        appDatabase.pokemonInfoDao().insert(
+            listOf(
+                currentInfo.copy(isFavorite = isFavorite)
+            )
+        )
+    }
 }

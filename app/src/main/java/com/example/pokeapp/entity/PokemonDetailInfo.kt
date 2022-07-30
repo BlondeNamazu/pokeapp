@@ -14,6 +14,7 @@ data class PokemonDetailInfo(
     val height: String,
     val weight: String,
     @Embedded(prefix = "stat") val statInfo: PokemonStatInfo,
+    val isFavorite: Boolean,
 ) {
     companion object {
         fun dummy() = PokemonDetailInfo(
@@ -23,7 +24,8 @@ data class PokemonDetailInfo(
             types = listOf("grass", "poison"),
             height = "7",
             weight = "69",
-            statInfo = PokemonStatInfo.dummy()
+            statInfo = PokemonStatInfo.dummy(),
+            isFavorite = false
         )
     }
 }
