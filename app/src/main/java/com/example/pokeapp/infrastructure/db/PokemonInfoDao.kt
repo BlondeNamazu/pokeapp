@@ -12,11 +12,11 @@ interface PokemonInfoDao {
     @Query("SELECT * FROM PokemonInfoDetail WHERE id = :id")
     fun getFlow(id: Long): Flow<PokemonDetailInfo>
 
-    @Query("SELECT * FROM PokemonInfoDetail WHERE id IN (:ids)")
-    suspend fun get(ids: List<Long>): List<PokemonDetailInfo>
-
     @Query("SELECT * FROM PokemonInfoDetail WHERE id = :id")
     suspend fun get(id: Long): List<PokemonDetailInfo>
+
+    @Query("SELECT * FROM PokemonInfoDetail WHERE isFavorite = 1")
+    fun getFavoriteFlow(): Flow<List<PokemonDetailInfo>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(pokemonInfoList: List<PokemonDetailInfo>)

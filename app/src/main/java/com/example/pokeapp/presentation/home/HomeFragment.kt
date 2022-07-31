@@ -19,6 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.findNavController
 import com.example.pokeapp.presentation.favorite.FavoriteScreen
+import com.example.pokeapp.presentation.favorite.FavoriteViewModel
 import com.example.pokeapp.presentation.search.SearchScreen
 import com.example.pokeapp.presentation.search.SearchViewModel
 import com.example.pokeapp.ui.theme.PokeAppTheme
@@ -27,11 +28,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     private val searchViewModel by viewModels<SearchViewModel>()
+    private val favoriteViewModel by viewModels<FavoriteViewModel>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        favoriteViewModel.initialize()
         return ComposeView(requireContext()).apply {
             setContent {
                 PokeAppTheme {
@@ -55,7 +59,7 @@ class HomeFragment : Fragment() {
                                 )
                             }
                             composable(BottomNavigationDestination.Favorite.label) {
-                                FavoriteScreen()
+                                FavoriteScreen(favoriteViewModel)
                             }
                         }
                     }

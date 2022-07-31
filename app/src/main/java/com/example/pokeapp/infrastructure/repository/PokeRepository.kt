@@ -38,6 +38,10 @@ class PokeRepository @Inject constructor(
         ).flow
     }
 
+    fun getFavoriteFlow(): Flow<List<PokemonDetailInfo>> {
+        return appDatabase.pokemonInfoDao().getFavoriteFlow()
+    }
+
     suspend fun updateFavoriteState(
         id: Long,
         isFavorite: Boolean
