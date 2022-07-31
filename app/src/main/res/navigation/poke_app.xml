@@ -13,10 +13,10 @@
             app:argType="long" />
     </fragment>
     <fragment
-        android:id="@+id/search_fragment"
-        android:name="com.example.pokeapp.presentation.search.SearchFragment">
+        android:id="@+id/home_fragment"
+        android:name="com.example.pokeapp.presentation.home.HomeFragment">
         <action
-            android:id="@+id/action_search_to_detail"
+            android:id="@+id/action_home_to_detail"
             app:destination="@id/detail_fragment"
             app:enterAnim="@anim/nav_up_enter_anim"
             app:exitAnim="@anim/nav_up_exit_anim"

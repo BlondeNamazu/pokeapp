@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         )
         val navGraph = navController.navInflater.inflate(R.navigation.poke_app)
         navController.graph = navGraph.apply {
-            setStartDestination(R.id.search_fragment)
+            setStartDestination(R.id.home_fragment)
         }
     }
 }
