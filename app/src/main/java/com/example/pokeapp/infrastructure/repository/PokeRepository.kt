@@ -31,7 +31,8 @@ class PokeRepository @Inject constructor(
         return Pager(
             config = PagingConfig(
                 pageSize = 50,
-                enablePlaceholders = false
+                enablePlaceholders = false,
+                initialLoadSize = PagingConfig.MAX_SIZE_UNBOUNDED
             ),
             pagingSourceFactory = { PokePagingSource(pokeApi) }
         ).flow
