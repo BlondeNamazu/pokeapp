@@ -59,7 +59,14 @@ class HomeFragment : Fragment() {
                                 )
                             }
                             composable(BottomNavigationDestination.Favorite.label) {
-                                FavoriteScreen(favoriteViewModel)
+                                FavoriteScreen(
+                                    viewModel = favoriteViewModel,
+                                    onClickInfo = { id ->
+                                        parentNavController.navigate(
+                                            HomeFragmentDirections.actionHomeToDetail(id)
+                                        )
+                                    }
+                                )
                             }
                         }
                     }
