@@ -2,9 +2,7 @@ package com.example.pokeapp.presentation.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -45,10 +43,10 @@ fun PokemonList(
                 color = Color.DarkGray,
             )
             .padding(
-                horizontal = 12.dp,
-                vertical = 12.dp
+                horizontal = 12.dp
             ),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(top = 12.dp, bottom = 68.dp),
     ) {
         items(pagingItems) {
             PokemonListItem(

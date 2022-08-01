@@ -57,10 +57,10 @@ fun PokemonList(
                 color = Color.DarkGray,
             )
             .padding(
-                horizontal = 12.dp,
-                vertical = 12.dp
+                horizontal = 12.dp
             ),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(top = 12.dp, bottom = 68.dp),
     ) {
         items(items) { info ->
             PokemonListItem(
