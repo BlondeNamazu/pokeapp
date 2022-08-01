@@ -7,24 +7,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconToggleButton
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.example.pokeapp.entity.PokemonDetailInfo
+import com.example.pokeapp.presentation.common.FavoriteButton
+import com.example.pokeapp.presentation.common.PokemonIdWithName
 
 
 @Composable
@@ -108,36 +101,16 @@ fun PokemonListItem(
             painter = rememberImagePainter(info.imageUrl),
             contentDescription = "pokemon image",
         )
-        Column(
-            verticalArrangement = Arrangement.spacedBy(0.dp),
-        ) {
-            Text(
-                modifier = Modifier
-                    .align(Alignment.Start),
-                text = "No.${info.id}",
-                style = TextStyle(textDecoration = TextDecoration.Underline),
-                fontSize = 14.sp
-            )
-            Text(
-                modifier = Modifier
-                    .align(Alignment.Start)
-                    .padding(start = 8.dp),
-                text = info.name,
-                fontSize = 24.sp
-            )
-        }
-        IconToggleButton(
+        PokemonIdWithName(
+            id = info.id,
+            name = info.name
+        )
+        FavoriteButton(
             checked = info.isFavorite,
             onCheckedChange = { isFavorite ->
                 onClickFavorite(info.id, isFavorite)
             }
-        ) {
-            Icon(
-                imageVector = if (info.isFavorite) Icons.Filled.Favorite else Icons.Outlined.Favorite,
-                contentDescription = "Favorite button",
-                tint = if (info.isFavorite) Color.Magenta else Color.Gray
-            )
-        }
+        )
     }
 }
 

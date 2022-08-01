@@ -8,15 +8,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,6 +27,7 @@ import androidx.navigation.fragment.navArgs
 import coil.compose.rememberImagePainter
 import com.example.pokeapp.entity.PokemonDetailInfo
 import com.example.pokeapp.entity.PokemonStatInfo
+import com.example.pokeapp.presentation.common.FavoriteButton
 import com.example.pokeapp.ui.theme.PokeAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -140,18 +140,12 @@ fun PokemonNameWithFavoriteButton(
             text = pokemonInfo.name,
             fontSize = 64.sp
         )
-        IconToggleButton(
+        FavoriteButton(
             checked = pokemonInfo.isFavorite,
             onCheckedChange = { isFavorite ->
                 onFavoriteButtonClicked(pokemonInfo.id, isFavorite)
             }
-        ) {
-            Icon(
-                imageVector = if (pokemonInfo.isFavorite) Icons.Filled.Favorite else Icons.Outlined.Favorite,
-                contentDescription = "Favorite button",
-                tint = if (pokemonInfo.isFavorite) Color.Magenta else Color.Gray
-            )
-        }
+        )
     }
 }
 
