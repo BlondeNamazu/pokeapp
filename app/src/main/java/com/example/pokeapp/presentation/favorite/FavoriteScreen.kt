@@ -7,8 +7,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
+import androidx.compose.material.IconToggleButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -26,7 +31,7 @@ import com.example.pokeapp.entity.PokemonDetailInfo
 fun FavoriteScreen(
     viewModel: FavoriteViewModel,
     onClickInfo: (id: Long) -> Unit = {},
-    onClickFavorite: (id: Long) -> Unit = {}
+    onClickFavorite: (id: Long, isFavorite: Boolean) -> Unit = { _, _ -> }
 ) {
     when (val state = viewModel.state.observeAsState().value) {
         FavoriteViewModel.State.Initial -> Unit
@@ -51,7 +56,7 @@ fun FavoriteScreen(
 fun PokemonList(
     items: List<PokemonDetailInfo>,
     onClickInfo: (id: Long) -> Unit = {},
-    onClickFavorite: (id: Long) -> Unit = {}
+    onClickFavorite: (id: Long, isFavorite: Boolean) -> Unit = { _, _ -> }
 ) {
     LazyColumn(
         modifier = Modifier
@@ -79,7 +84,7 @@ fun PokemonListItem(
     info: PokemonDetailInfo,
     modifier: Modifier = Modifier,
     onClickInfo: (id: Long) -> Unit = {},
-    onClickFavorite: (id: Long) -> Unit = {},
+    onClickFavorite: (id: Long, isFavorite: Boolean) -> Unit = { _, _ -> }
 ) {
     Row(
         modifier = modifier
@@ -119,6 +124,18 @@ fun PokemonListItem(
                     .padding(start = 8.dp),
                 text = info.name,
                 fontSize = 24.sp
+            )
+        }
+        IconToggleButton(
+            checked = info.isFavorite,
+            onCheckedChange = { isFavorite ->
+                onClickFavorite(info.id, isFavorite)
+            }
+        ) {
+            Icon(
+                imageVector = if (info.isFavorite) Icons.Filled.Favorite else Icons.Outlined.Favorite,
+                contentDescription = "Favorite button",
+                tint = if (info.isFavorite) Color.Magenta else Color.Gray
             )
         }
     }

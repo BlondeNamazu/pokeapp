@@ -30,4 +30,10 @@ class FavoriteViewModel @Inject constructor(
                 }
         }
     }
+
+    fun setFavoriteState(id: Long, isFavorite: Boolean) {
+        viewModelScope.launch {
+            repository.updateFavoriteState(id, isFavorite)
+        }
+    }
 }

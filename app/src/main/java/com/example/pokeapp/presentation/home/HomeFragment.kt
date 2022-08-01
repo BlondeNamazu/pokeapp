@@ -65,6 +65,9 @@ class HomeFragment : Fragment() {
                                         parentNavController.navigate(
                                             HomeFragmentDirections.actionHomeToDetail(id)
                                         )
+                                    },
+                                    onClickFavorite = { id, isFavorite ->
+                                        favoriteViewModel.setFavoriteState(id, isFavorite)
                                     }
                                 )
                             }
