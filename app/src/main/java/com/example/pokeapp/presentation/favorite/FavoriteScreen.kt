@@ -10,10 +10,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberImagePainter
 import com.example.pokeapp.entity.PokemonDetailInfo
 import com.example.pokeapp.presentation.common.FavoriteButton
@@ -79,7 +79,7 @@ fun PokemonListItem(
     onClickInfo: (id: Long) -> Unit = {},
     onClickFavorite: (id: Long, isFavorite: Boolean) -> Unit = { _, _ -> }
 ) {
-    Row(
+    ConstraintLayout(
         modifier = modifier
             .clickable {
                 onClickInfo(info.id)
@@ -93,19 +93,36 @@ fun PokemonListItem(
                 horizontal = 12.dp,
                 vertical = 8.dp
             ),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically
     ) {
+        val (image, summary, favorite) = createRefs()
         Image(
-            modifier = Modifier.size(48.dp),
+            modifier = Modifier
+                .constrainAs(image) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    bottom.linkTo(parent.bottom)
+                }
+                .size(48.dp),
             painter = rememberImagePainter(info.imageUrl),
             contentDescription = "pokemon image",
         )
         PokemonIdWithName(
+            modifier = Modifier
+                .constrainAs(summary) {
+                    top.linkTo(parent.top)
+                    start.linkTo(image.end, margin = 8.dp)
+                    bottom.linkTo(parent.bottom)
+                },
             id = info.id,
             name = info.name
         )
         FavoriteButton(
+            modifier = Modifier
+                .constrainAs(favorite) {
+                    top.linkTo(parent.top)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
+                },
             checked = info.isFavorite,
             onCheckedChange = { isFavorite ->
                 onClickFavorite(info.id, isFavorite)
