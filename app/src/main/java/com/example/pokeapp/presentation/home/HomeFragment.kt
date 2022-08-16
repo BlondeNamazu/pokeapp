@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,15 +22,15 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.findNavController
 import com.example.pokeapp.presentation.favorite.FavoriteScreen
 import com.example.pokeapp.presentation.favorite.FavoriteViewModel
 import com.example.pokeapp.presentation.search.SearchScreen
 import com.example.pokeapp.presentation.search.SearchViewModel
 import com.example.pokeapp.ui.theme.PokeAppTheme
+import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,6 +38,7 @@ class HomeFragment : Fragment() {
     private val searchViewModel by viewModels<SearchViewModel>()
     private val favoriteViewModel by viewModels<FavoriteViewModel>()
 
+    @OptIn(ExperimentalAnimationApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,7 +49,7 @@ class HomeFragment : Fragment() {
             setContent {
                 PokeAppTheme {
                     val parentNavController = findNavController()
-                    val homeNavController = rememberNavController()
+                    val homeNavController = rememberAnimatedNavController()
                     val modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight()
@@ -53,11 +57,23 @@ class HomeFragment : Fragment() {
                     Scaffold(
                         bottomBar = { BottomNavigationBar(homeNavController) }
                     ) {
-                        NavHost(
+                        AnimatedNavHost(
                             navController = homeNavController,
                             startDestination = BottomNavigationDestination.Search.label
                         ) {
-                            composable(BottomNavigationDestination.Search.label) {
+                            composable(
+                                BottomNavigationDestination.Search.label,
+                                enterTransition = {
+                                    slideInHorizontally(
+                                        initialOffsetX = { -it }
+                                    )
+                                },
+                                exitTransition = {
+                                    slideOutHorizontally(
+                                        targetOffsetX = { -it }
+                                    )
+                                }
+                            ) {
                                 SearchScreen(
                                     viewModel = searchViewModel,
                                     modifier = modifier,
@@ -68,7 +84,19 @@ class HomeFragment : Fragment() {
                                     }
                                 )
                             }
-                            composable(BottomNavigationDestination.Favorite.label) {
+                            composable(
+                                BottomNavigationDestination.Favorite.label,
+                                enterTransition = {
+                                    slideInHorizontally(
+                                        initialOffsetX = { it }
+                                    )
+                                },
+                                exitTransition = {
+                                    slideOutHorizontally(
+                                        targetOffsetX = { it }
+                                    )
+                                }
+                            ) {
                                 FavoriteScreen(
                                     viewModel = favoriteViewModel,
                                     modifier = modifier,
