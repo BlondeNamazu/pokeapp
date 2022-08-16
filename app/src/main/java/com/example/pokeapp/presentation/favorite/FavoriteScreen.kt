@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -23,24 +22,19 @@ import com.example.pokeapp.presentation.common.PokemonIdWithName
 @Composable
 fun FavoriteScreen(
     viewModel: FavoriteViewModel,
+    modifier: Modifier = Modifier,
     onClickInfo: (id: Long) -> Unit = {},
     onClickFavorite: (id: Long, isFavorite: Boolean) -> Unit = { _, _ -> }
 ) {
     when (val state = viewModel.state.observeAsState().value) {
         FavoriteViewModel.State.Initial -> Unit
         is FavoriteViewModel.State.Ideal -> {
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .background(color = Color.Gray),
-            ) {
-                PokemonList(
-                    items = state.pokemonList,
-                    onClickInfo = onClickInfo,
-                    onClickFavorite = onClickFavorite
-                )
-            }
+            PokemonList(
+                items = state.pokemonList,
+                modifier = modifier,
+                onClickInfo = onClickInfo,
+                onClickFavorite = onClickFavorite
+            )
         }
     }
 }
@@ -48,14 +42,12 @@ fun FavoriteScreen(
 @Composable
 fun PokemonList(
     items: List<PokemonDetailInfo>,
+    modifier: Modifier = Modifier,
     onClickInfo: (id: Long) -> Unit = {},
     onClickFavorite: (id: Long, isFavorite: Boolean) -> Unit = { _, _ -> }
 ) {
     LazyColumn(
-        modifier = Modifier
-            .background(
-                color = Color.DarkGray,
-            )
+        modifier = modifier
             .padding(
                 horizontal = 12.dp
             ),

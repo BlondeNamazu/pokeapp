@@ -4,11 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
@@ -41,6 +46,10 @@ class HomeFragment : Fragment() {
                 PokeAppTheme {
                     val parentNavController = findNavController()
                     val homeNavController = rememberNavController()
+                    val modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .background(Color.DarkGray)
                     Scaffold(
                         bottomBar = { BottomNavigationBar(homeNavController) }
                     ) {
@@ -51,6 +60,7 @@ class HomeFragment : Fragment() {
                             composable(BottomNavigationDestination.Search.label) {
                                 SearchScreen(
                                     viewModel = searchViewModel,
+                                    modifier = modifier,
                                     onClickItem = { id ->
                                         parentNavController.navigate(
                                             HomeFragmentDirections.actionHomeToDetail(id)
@@ -61,6 +71,7 @@ class HomeFragment : Fragment() {
                             composable(BottomNavigationDestination.Favorite.label) {
                                 FavoriteScreen(
                                     viewModel = favoriteViewModel,
+                                    modifier = modifier,
                                     onClickInfo = { id ->
                                         parentNavController.navigate(
                                             HomeFragmentDirections.actionHomeToDetail(id)

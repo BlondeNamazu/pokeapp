@@ -2,11 +2,13 @@ package com.example.pokeapp.presentation.search
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,26 +24,24 @@ import com.example.pokeapp.ui.theme.PokeAppTheme
 @Composable
 fun SearchScreen(
     viewModel: SearchViewModel,
+    modifier: Modifier = Modifier,
     onClickItem: (id: Long) -> Unit
 ) {
-    Surface(color = MaterialTheme.colors.background) {
-        PokemonList(
-            pagingItems = viewModel.pagingDataFlow.collectAsLazyPagingItems(),
-            onClickListener = onClickItem
-        )
-    }
+    PokemonList(
+        pagingItems = viewModel.pagingDataFlow.collectAsLazyPagingItems(),
+        modifier = modifier,
+        onClickListener = onClickItem
+    )
 }
 
 @Composable
 fun PokemonList(
     pagingItems: LazyPagingItems<PokemonSummaryInfo>,
+    modifier: Modifier = Modifier,
     onClickListener: (id: Long) -> Unit = {}
 ) {
     LazyColumn(
-        modifier = Modifier
-            .background(
-                color = Color.DarkGray,
-            )
+        modifier = modifier
             .padding(
                 horizontal = 12.dp
             ),
